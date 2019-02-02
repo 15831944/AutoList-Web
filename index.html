@@ -4,9 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="./dist/css/main.css" rel="stylesheet"/>
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello World</h1>
+    <h2 style="grid-area: message;">AutoList</h2>
+
+    <textarea id="input-textarea" class="autolist-textarea" style="grid-area: input-area;"></textarea>
+
+    <div id="output-div" style="grid-area: output-area;">
+        <textarea id="output-total-length" class="autolist-textarea output-area"></textarea>
+        <textarea id="output-total-area" class="autolist-textarea output-area"></textarea>
+    </div>
+
+    <script src="./dist/js/AutoList.js"></script>
+    <script>main();</script>
 </body>
 </html>
