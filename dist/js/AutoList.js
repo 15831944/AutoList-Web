@@ -19,6 +19,7 @@ var BlockList;
 var linesLengthPattern = /[L,l]ength\s+=?\s*(\d+\.?\d*)/g;
 var hatchAreaPattern = /[A]rea\s*(\d+\.?\d*)/g;
 var textPattern = /(text|Contents:)\s*(.*)/g;
+var mTextFormatting = new RegExp("(.*;)(.*)}");
 /**
  * Main Function
  */
@@ -111,6 +112,10 @@ function getBlocks(inputText) {
         var currentMatch = matches[matchIndex];
         if (textIndex < textObjects.length && currentText == null && (currentMatch == "TEXT" || currentMatch == "MTEXT")) {
             currentText = textObjects[textIndex++];
+            if (currentMatch == "MTEXT") {
+                var text = currentText.match(/;*(.*)}*/);
+                currentText = text[1];
+            }
             continue;
         }
         if (lineIndex < lengthObject.length && (currentMatch == "LWPOLYLINE" || currentMatch == "LINE" || currentMatch == "ARC")) {
@@ -122,6 +127,10 @@ function getBlocks(inputText) {
             continue;
         }
         if (textIndex < textObjects.length && currentText != null && (currentMatch == "TEXT" || currentMatch == "MTEXT")) {
+            if (currentText != null && mTextFormatting.test(currentText)) {
+                var text = currentText.match(mTextFormatting);
+                currentText = text[2];
+            }
             blockList.push(new Block(currentText, currentLength, currentArea));
             currentText = textObjects[textIndex++];
             currentLength = 0.0;
@@ -129,6 +138,10 @@ function getBlocks(inputText) {
         }
     }
     if (blockList.length < textObjects.length) {
+        if (currentText != null && mTextFormatting.test(currentText)) {
+            var text = currentText.match(mTextFormatting);
+            currentText = text[2];
+        }
         blockList.push(new Block(currentText, currentLength, currentArea));
     }
     return blockList;

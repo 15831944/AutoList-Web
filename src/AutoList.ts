@@ -23,6 +23,7 @@ var BlockList:Array<Block>;
 var linesLengthPattern:RegExp = /[L,l]ength\s+=?\s*(\d+\.?\d*)/g;
 var hatchAreaPattern:RegExp = /[A]rea\s*(\d+\.?\d*)/g
 var textPattern:RegExp = /(text|Contents:)\s*(.*)/g
+var mTextFormatting:RegExp = new RegExp("(.*;)(.*)}")
 
 /**
  * Main Function
@@ -148,6 +149,11 @@ function getBlocks(inputText:string): Array<Block>
         if (textIndex < textObjects.length && currentText == null && (currentMatch == "TEXT" || currentMatch == "MTEXT"))
         {
             currentText = textObjects[textIndex++];
+            if (currentMatch == "MTEXT")
+            {
+                var text = currentText.match(/;*(.*)}*/) as RegExpMatchArray;
+                currentText = text[1];
+            }
             continue;
         }
 
@@ -165,6 +171,11 @@ function getBlocks(inputText:string): Array<Block>
 
         if (textIndex < textObjects.length && currentText != null && (currentMatch == "TEXT" || currentMatch == "MTEXT"))
         {
+            if (currentText != null && mTextFormatting.test(currentText))
+            {
+                var text = currentText.match(mTextFormatting) as RegExpMatchArray;
+                currentText = text[2];
+            }
             blockList.push(new Block(currentText, currentLength, currentArea));
             currentText = textObjects[textIndex++];
             currentLength = 0.0;
@@ -174,6 +185,11 @@ function getBlocks(inputText:string): Array<Block>
 
     if (blockList.length < textObjects.length)
     {
+        if (currentText != null && mTextFormatting.test(currentText))
+        {
+            var text = currentText.match(mTextFormatting) as RegExpMatchArray;
+            currentText = text[2];
+        }
         blockList.push(new Block(currentText as string, currentLength, currentArea));
     }
 
