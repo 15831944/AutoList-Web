@@ -8,16 +8,26 @@
     <title>Document</title>
 </head>
 <body>
-    <h2 style="grid-area: message;">AutoList</h2>
+    <div style="grid-area: message;">
+        <h2>AutoList</h2>
+        <p>AutoList is a </p>
+    </div>
 
     <textarea id="input-textarea" class="autolist-textarea" style="grid-area: input-area;"></textarea>
 
     <div id="output-div" style="grid-area: output-area;">
-        <textarea id="output-total-length" class="autolist-textarea output-area"></textarea>
-        <textarea id="output-total-area" class="autolist-textarea output-area"></textarea>
+        <textarea id="output-total-length" class="autolist-textarea output-area" placeholder="Total Length" readonly></textarea>
+        <textarea id="output-total-area" class="autolist-textarea output-area" placeholder="Total Area" readonly></textarea>
+    </div>
+
+    <div id="table-div" style="grid-area: table-area">
+        
     </div>
 
     <script src="./dist/js/AutoList.js"></script>
     <script>main();</script>
+
+
+
 </body>
 </html>
