@@ -1,4 +1,9 @@
 "use strict";
+/**
+ * AutoList.ts
+ * AutoList is an application that is used to extract information from
+ * the List command in AutoCAD
+ */
 // DOM elements
 var textArea;
 var totalLengthArea;
