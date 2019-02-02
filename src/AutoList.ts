@@ -6,10 +6,12 @@ var totalLengthArea : HTMLTextAreaElement;
 var totalAreaArea : HTMLTextAreaElement;
 var tableDiv: HTMLDivElement;
 var currentTable : HTMLTableElement;
+var downloadButton: HTMLButtonElement;
 
+// Other Globals
 var lengths:Array<number>;
-
 var areas:Array<number>;
+var BlockList:Array<Block>;
 
 // Regex patterns
 var linesLengthPattern:RegExp = /[L,l]ength\s+=?\s*(\d+\.?\d*)/g;
@@ -28,9 +30,13 @@ function main()
     totalLengthArea = document.getElementById('output-total-length') as HTMLTextAreaElement;
     totalAreaArea = document.getElementById('output-total-area') as HTMLTextAreaElement;
     tableDiv = document.getElementById('table-div') as HTMLDivElement;
+    
+    downloadButton = document.getElementById('download-button') as HTMLButtonElement;
+    downloadButton.style.display = 'none';
 
     // Adding event listeners to the text area
     textArea.addEventListener('input', () => textAreaOnInput());
+    downloadButton.addEventListener('click', () => downloader("blocks.csv", BlockstoCsv(BlockList)));
 }
 
 /**
@@ -61,9 +67,15 @@ function textAreaOnInput()
             tableDiv.appendChild(currentTable);
         else
             tableDiv.replaceChild(currentTable, oldtable);
+        
+        downloadButton.style.display = 'block';
+        BlockList = blocks;
     }
     if (blocks.length === 0 && tableDiv.childElementCount > 0)
+    {
         tableDiv.removeChild(currentTable);
+        downloadButton.style.display = 'none';
+    }
 }
 
 /**
@@ -222,6 +234,35 @@ function updateTable(blocks:Array<Block>) : HTMLTableElement
     return table;
 }
 
+/**
+ * Convert the block array to a CSV String
+ */
+function BlockstoCsv(blocks: Array<Block>):string
+{
+    var returnString:string = "Block ID,Frontage,Area(m2),Area(Ha),Area(Ac)\n";
+
+    blocks.forEach((block) => {
+        returnString = returnString
+            .concat(`${block.Id},${block.Frontage},${block.AreaM},${block.AreaHa},${block.AreaAc}\n`);
+    });
+
+    return returnString;
+}
+
+function downloader(filename:string, text:string)
+{
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
 
 /**
  * Class that defines a block data structure

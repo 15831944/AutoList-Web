@@ -5,8 +5,11 @@ var totalLengthArea;
 var totalAreaArea;
 var tableDiv;
 var currentTable;
+var downloadButton;
+// Other Globals
 var lengths;
 var areas;
+var BlockList;
 // Regex patterns
 var linesLengthPattern = /[L,l]ength\s+=?\s*(\d+\.?\d*)/g;
 var hatchAreaPattern = /[A]rea\s*(\d+\.?\d*)/g;
@@ -21,8 +24,11 @@ function main() {
     totalLengthArea = document.getElementById('output-total-length');
     totalAreaArea = document.getElementById('output-total-area');
     tableDiv = document.getElementById('table-div');
+    downloadButton = document.getElementById('download-button');
+    downloadButton.style.display = 'none';
     // Adding event listeners to the text area
     textArea.addEventListener('input', function () { return textAreaOnInput(); });
+    downloadButton.addEventListener('click', function () { return downloader("blocks.csv", BlockstoCsv(BlockList)); });
 }
 /**
  * Function that sets the values for the areas and lengths
@@ -46,9 +52,13 @@ function textAreaOnInput() {
             tableDiv.appendChild(currentTable);
         else
             tableDiv.replaceChild(currentTable, oldtable);
+        downloadButton.style.display = 'block';
+        BlockList = blocks;
     }
-    if (blocks.length === 0 && tableDiv.childElementCount > 0)
+    if (blocks.length === 0 && tableDiv.childElementCount > 0) {
         tableDiv.removeChild(currentTable);
+        downloadButton.style.display = 'none';
+    }
 }
 /**
  * General sum reduction formula
@@ -162,6 +172,26 @@ function updateTable(blocks) {
     table.appendChild(header);
     table.appendChild(body);
     return table;
+}
+/**
+ * Convert the block array to a CSV String
+ */
+function BlockstoCsv(blocks) {
+    var returnString = "Block ID,Frontage,Area(m2),Area(Ha),Area(Ac)\n";
+    blocks.forEach(function (block) {
+        returnString = returnString
+            .concat(block.Id + "," + block.Frontage + "," + block.AreaM + "," + block.AreaHa + "," + block.AreaAc + "\n");
+    });
+    return returnString;
+}
+function downloader(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
 }
 /**
  * Class that defines a block data structure
