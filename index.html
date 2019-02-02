@@ -10,10 +10,34 @@
 <body>
     <div style="grid-area: message;">
         <h2>AutoList</h2>
-        <p>AutoList is a </p>
+        <h3>Introduction</h3>
+        <p>
+            AutoList is a program that extracts information from AutoCAD List command output. Currently this can be used with
+            text, mtext, lines, lwpolylines and hatches. This tool can be used to calculate the total length/area of lines and
+            hatches or download all of the lengths/areas of many different hatchs/lines/arcs and so on.
+        </p>
+
+        <h3>How to</h3>
+        <p>
+            Within AutoCAD first enter the LIST command, then select the objects that you would like to see information about. Then
+            just paste the whole output of the LIST command into the text bow below.
+        </p>
+        <h4>More than one object</h4>
+        <p>
+            When you would like to download a CSV of these objects select the objects in the following order (TEXT, LINE/LWPOLYLINE/HATCH/ARC, TEXT, LINE/LWPOLYLINE/HATCH/ARC, ...).
+            The text object will be used as the object's ID. The other objects are not required. Note that if selecting more than one LINE/LWPOLYLINE between TEXTs the 
+            lengths will be added together to give a total length. The same goes for HATCHs but for their areas.
+        </p>
+        
+        <h3>Bug and Issues</h3>
+        <p>
+            For bugs and issues you can either post an issue on <a href="https://github.com/rena0157/AutoList-Web">GitHub</a> or just
+            send me a message on GitHub.
+        </p>
+        
     </div>
 
-    <textarea id="input-textarea" class="autolist-textarea" style="grid-area: input-area;"></textarea>
+    <textarea id="input-textarea" class="autolist-textarea" style="grid-area: input-area;" placeholder="Paste LIST Text Here..."></textarea>
 
     <div id="output-div" style="grid-area: output-area;">
         <textarea id="output-total-length" class="autolist-textarea output-area" placeholder="Total Length" readonly></textarea>
@@ -27,8 +51,5 @@
 
     <script src="./dist/js/AutoList.js"></script>
     <script>main();</script>
-
-
-
 </body>
 </html>
