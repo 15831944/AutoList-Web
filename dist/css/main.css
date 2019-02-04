@@ -79,3 +79,12 @@ body {
     padding: 0.1em 0.2em 0.1em 0.2em;
     text-align: center;
 }
+
+code {
+    font-family: 'Roboto Mono', monospace;
+    margin: 0.1em;
+    padding: 0.15em;
+    font-size: 80%;
+    color: red;
+    background-color: #e9e9e9;
+}
