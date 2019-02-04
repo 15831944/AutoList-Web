@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono');
 
+/* 
+    main.css
+    By: Adam Renaud
+    Created on: 2019-02-03
+
+    Hold the styles for the AutoList Application
+*/
+
 html {
     font-family: 'Roboto', sans-serif;
     font-size: 100%;
