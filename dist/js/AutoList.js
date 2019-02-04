@@ -1,44 +1,28 @@
 "use strict";
-/**
- * AutoList.ts
- * AutoList is an application that is used to extract information from
- * the List command in AutoCAD
- */
-// DOM elements
 var textArea;
 var totalLengthArea;
 var totalAreaArea;
 var tableDiv;
 var currentTable;
 var downloadButton;
-// Other Globals
 var lengths;
 var areas;
 var BlockList;
-// Regex patterns
 var linesLengthPattern = /[L,l]ength\s+=?\s*(\d+\.?\d*)/g;
 var hatchAreaPattern = /[A]rea\s*(\d+\.?\d*)/g;
 var textPattern = /(text|Contents:)\s*(.*)/g;
 var mTextFormatting = new RegExp("(.*;)(.*)}");
-/**
- * Main Function
- */
 function main() {
     console.log("Welcome to AutoList");
-    // Get DOM elements
     textArea = document.getElementById('input-textarea');
     totalLengthArea = document.getElementById('output-total-length');
     totalAreaArea = document.getElementById('output-total-area');
     tableDiv = document.getElementById('table-div');
     downloadButton = document.getElementById('download-button');
     downloadButton.style.display = 'none';
-    // Adding event listeners to the text area
     textArea.addEventListener('input', function () { return textAreaOnInput(); });
     downloadButton.addEventListener('click', function () { return downloader("blocks.csv", BlockstoCsv(BlockList)); });
 }
-/**
- * Function that sets the values for the areas and lengths
- */
 function textAreaOnInput() {
     lengths = GetObjects(textArea.value, linesLengthPattern);
     if (lengths.length > 0)
@@ -66,13 +50,7 @@ function textAreaOnInput() {
         downloadButton.style.display = 'none';
     }
 }
-/**
- * General sum reduction formula
- */
 var sum = function (a, b) { return a + b; };
-/**
- * return a list of matches from a string given a regex pattern
- */
 function GetObjects(text, re) {
     var match;
     var matches = new Array();
@@ -81,9 +59,6 @@ function GetObjects(text, re) {
     }
     return matches;
 }
-/**
- * return a list of matches from a string given a regex pattern
- */
 function GetText(text, re, g) {
     var match;
     var matches = new Array();
@@ -92,9 +67,6 @@ function GetText(text, re, g) {
     }
     return matches;
 }
-/**
- * Function that creates a list of blocks
- */
 function getBlocks(inputText) {
     var blockList = new Array();
     var textObjects = GetText(inputText, textPattern, 2);
@@ -151,7 +123,6 @@ function updateTable(blocks) {
     table.setAttribute('class', "table");
     var header = document.createElement('thead');
     var body = document.createElement('tbody');
-    // Headers
     var h1 = document.createElement('th');
     h1.textContent = "Block ID";
     header.appendChild(h1);
@@ -167,7 +138,6 @@ function updateTable(blocks) {
     var h5 = document.createElement('th');
     h5.textContent = "Area (Ac)";
     header.appendChild(h5);
-    // Body
     blocks.forEach(function (block) {
         var row = document.createElement('tr');
         var IDcell = document.createElement('td');
@@ -191,9 +161,6 @@ function updateTable(blocks) {
     table.appendChild(body);
     return table;
 }
-/**
- * Convert the block array to a CSV String
- */
 function BlockstoCsv(blocks) {
     var returnString = "Block ID,Frontage,Area(m2),Area(Ha),Area(Ac)\n";
     blocks.forEach(function (block) {
@@ -211,14 +178,7 @@ function downloader(filename, text) {
     element.click();
     document.body.removeChild(element);
 }
-/**
- * Class that defines a block data structure
- */
-var Block = /** @class */ (function () {
-    /**
-     * Constructor for the block class
-     * Note that the block must have an id but not a frontage or an area
-     */
+var Block = (function () {
     function Block(id, frontage, areaM) {
         if (frontage === void 0) { frontage = 0; }
         if (areaM === void 0) { areaM = 0; }
@@ -230,3 +190,4 @@ var Block = /** @class */ (function () {
     }
     return Block;
 }());
+//# sourceMappingURL=AutoList.js.map
