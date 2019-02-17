@@ -1,0 +1,30 @@
+
+// The color of the header
+$header-color: #e1edff;
+
+table {
+    margin-top: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    border-collapse: collapse;
+    overflow-x: auto;
+    table-layout: fixed;
+    font-family: inherit;
+}
+/* Styling for the block table headers */
+table th {
+    background-color: $header-color;
+    font-weight: normal;
+    line-height: 2em;
+}
+/* Styling for the block table */
+table tr, th, td {
+    border: 1px solid rgb(66, 66, 66);
+    padding: 0.1em 0.2em 0.1em 0.2em;
+    text-align: center;
+    line-height: 2em;
+}
+
+table tr:hover {
+    background-color: #eff5ff;
+}

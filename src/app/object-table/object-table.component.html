@@ -1,0 +1,23 @@
+<!-- Object table component -->
+<!-- By Adam Renaud -->
+<!-- Created: 2019-02-17 -->
+<table>
+    <thead>
+        <tr>
+            <th>Object ID</th>
+            <th>Length (m)</th>
+            <th>Area (m²)</th>
+            <th>Area (Ha)</th>
+            <th>Area (Ac)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let o of objectArray">
+            <td>{{o.ID}}</td>
+            <td>{{o.Length | number}}</td>
+            <td>{{o.AreaM | number}}</td>
+            <td>{{o.AreaHa | number}}</td>
+            <td>{{o.AreaAc | number}}</td>
+        </tr>
+    </tbody>
+</table>
